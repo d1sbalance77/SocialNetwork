@@ -14,6 +14,7 @@ class User(Base):
     city = Column(String)
     birthday = Column(Integer)
     profile_photo = Column(String)
+    password = Column(String)
 
     reg_date = Column(DateTime)
 
@@ -34,7 +35,7 @@ class PostPhoto(Base):
     __tablename__ = 'post_photos'
 
     photo_id = Column(Integer, primary_key=True, autoincrement=True)
-    post_id = Column(Integer, ForeignKey("user_photo.post_id"))
+    post_id = Column(Integer, ForeignKey("posts.post_id"))
     photo_path = Column(String)
 
     post_fk = relationship(UserPost, lazy='subquery')
@@ -44,8 +45,8 @@ class PostComment(Base):
 
     comment_id = Column(Integer, primary_key=True, autoincrement=True)
 
-    post_id = Column(Integer, ForeignKey('user_posts.post_id'))
-    user_id = Column(Integer, ForeignKey('users_user_id'))
+    post_id = Column(Integer, ForeignKey('posts.post_id'))
+    user_id = Column(Integer, ForeignKey('users.user_id'))
 
     comment_text = Column(String)
     publish_date = Column(Integer)

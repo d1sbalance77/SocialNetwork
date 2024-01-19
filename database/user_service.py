@@ -20,7 +20,7 @@ def get_exact_user(user_id):
         return 'This user does not exists in DataBase'
 
 
-def add_new_user_id(name, surname, city, phone_number, birthday, reg_date, email):
+def add_new_user_db(name, surname, city, phone_number, password, email):
     db = next(get_db())
 
     checker = db.query(User).filter_by(phone_number=phone_number).first()
@@ -33,9 +33,8 @@ def add_new_user_id(name, surname, city, phone_number, birthday, reg_date, email
                         surname=surname,
                         city=city,
                         phone_number=phone_number,
-                        birthday=birthday,
-                        reg_date=reg_date,
-                        email=email)
+                        email=email,
+                        password=password)
 
 
     db.add(new_user)
@@ -47,12 +46,16 @@ def add_new_user_id(name, surname, city, phone_number, birthday, reg_date, email
 def login_user_db(phone_number, password):
     db = next(get_db())
 
-    user = db.query(User).filter(phone_number=phone_number,password=password).first()
+    checker = db.query(User).filter_by(phone_number=phone_number,password=password).first()
 
-    if user:
-        return user
+    if checker:
+        if checker.password == password:
+            return checker
+        elif checker.password != password:
+            return 'Incorrect password'
     else:
-        return 'Error in authorization'
+        return 'Error in data'
+
 
 
 def edit_user_info_db(user_id,edit_info,new_info):
